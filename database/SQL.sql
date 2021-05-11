@@ -70,7 +70,7 @@ VALUES (1, 'Stein'),
        (2, 'Stein'),
 
        (3, 'Schere'),
-       (3, 'Papier'),
+       (3, 'Schere'),
 
        (4, 'Papier'),
        (4, 'Schere'),
