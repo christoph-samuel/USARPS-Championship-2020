@@ -11,30 +11,33 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
+
 <?php
+require_once 'vendor/autoload.php';
 include_once("functions.php");
 
-$host = "localhost";
-$db = "usarps_db";
-$user = "root";
-$passwd = "";
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", "$user", "$passwd");
-} catch (PDOException $e) {
-    echo 'Verbindung fehlgeschlagen';
-}
-
-$sql = $pdo->prepare("SELECT * FROM tournament");
-$sql->execute();
-$sql = $sql->fetchAll();
+$sql = select("SELECT * FROM tournament");
+$i = 0;
 
 foreach ($sql as $tournament) {
     $changeDate = 'changeDate';
 
     echo <<<ENDE
-    <h1>Championship $tournament[0]</h1>
-    <h5>{$changeDate($tournament[1])}</h5>
+<div>
+    <div class="header">
+        <h1>Championship {$tournament['pk_tournament_year']}</h1>
+ENDE;
+    if ($i === 0) {
+        echo <<<ENDE
+        <form method="get" action="admin.php">
+            <button type="submit" class="btn btn-dark">Admin-Bereich</button>
+        </form>
+ENDE;
+        $i++;
+    }
+    echo <<<ENDE
+    </div>
+    <h5>{$changeDate($tournament['date'])}</h5>
 
     <table class="table table-hover table-striped">
         <thead class="table-dark">
@@ -50,51 +53,30 @@ foreach ($sql as $tournament) {
         <tbody>
 ENDE;
 
-    $sql2 = $pdo->prepare("SELECT * FROM game_round");
-    $sql2->execute();
-    $sql2 = $sql2->fetchAll();
+    $sql2 = select("SELECT * FROM game_round WHERE fk_pk_tournament_year = {$tournament['pk_tournament_year']}");
 
     foreach ($sql2 as $game_round) {
         echo <<<ENDE
             <tr>
-                <th scope="row">$game_round[0]</th>
+                <th scope="row">{$game_round['round_nr']}</th>
 ENDE;
 
-        $sql3 = $pdo->prepare("SELECT * FROM participant_takes_part_game_round
-                                        INNER JOIN participant p on participant_takes_part_game_round.fk_pk_participant_id = p.pk_participant_id
-                                        WHERE fk_pk_round_nr = " . $game_round[0]);
-        $sql3->execute();
-        $sql3 = $sql3->fetchAll();
+        $sql3 = select("SELECT * FROM participant_takes_part_game_round INNER JOIN participant p on participant_takes_part_game_round.fk_pk_participant_id = p.pk_participant_id WHERE fk_pk_round_id = " . $game_round['pk_round_id']);
 
-        $sql4 = $pdo->prepare("SELECT * FROM game_round_selects_symbol
-                                        INNER JOIN game_round gr on game_round_selects_symbol.fk_pk_round_nr = gr.pk_round_nr
-                                        WHERE fk_pk_round_nr = " . $game_round[0]);
-        $sql4->execute();
-        $sql4 = $sql4->fetchAll();
+        $sql4 = select("SELECT * FROM game_round_selects_symbol
+                                        INNER JOIN game_round gr on game_round_selects_symbol.fk_pk_round_id = gr.pk_round_id
+                                        WHERE fk_pk_round_id = " . $game_round['pk_round_id']);
 
-        echo "<td>{$sql3[0][3]} {$sql3[0][4]}</td>";
-        echo "<td><img src='".getSymbol($sql4[0][1])."'></td>";
-        echo "<td>&ndash;</td>";
-        echo "<td><img src='".getSymbol($sql4[1][1])."' class='second'></td>";
-        echo "<td>{$sql3[1][3]} {$sql3[1][4]}</td>";
+        if (isset($sql3, $sql4) && $sql3 != null && $sql4 != null) {
+            echo "<td>{$sql3[0]['first_name']} {$sql3[0]['last_name']}</td>";
+            echo "<td><img src='" . getSymbol($sql4[0]['fk_pk_symbol']) . "'></td>";
+            echo "<td>&ndash;</td>";
+            echo "<td><img src='" . getSymbol($sql4[1]['fk_pk_symbol']) . "' class='second'></td>";
+            echo "<td>{$sql3[1]['first_name']} {$sql3[1]['last_name']}</td>";
+        }
     }
-    echo "</tbody></table>";
+    echo "</tbody></table></div>";
 }
-
-function getSymbol($symbol) {
-    switch ($symbol) {
-        case "Schere":
-            return "images/scissors.png";
-        case "Stein":
-            return "images/rock.png";
-        case "Papier":
-            return "images/paper.png";
-        default:
-            echo "Symbol unknown!";
-            return "";
-    }
-}
-
 ?>
 </body>
 </html>

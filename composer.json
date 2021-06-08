@@ -1,0 +1,14 @@
+{
+    "name": "chsam/usarps-championship-2020",
+    "description": "USARPS Championships",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Christoph Samuel",
+            "email": "chsamuel@gmx.at"
+        }
+    ],
+    "require": {
+        "doctrine/dbal": "^3.1"
+    }
+}

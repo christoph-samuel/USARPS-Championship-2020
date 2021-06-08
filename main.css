@@ -1,5 +1,8 @@
 body {
-    padding: 20px;
+    padding: 5vh 20px;
+}
+body > div {
+    margin-bottom: 50px;
 }
 
 img {
@@ -15,4 +18,9 @@ table {
 }
 td, th {
     vertical-align: middle;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
 }

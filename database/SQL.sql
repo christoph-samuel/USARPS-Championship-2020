@@ -11,7 +11,11 @@ CREATE TABLE IF NOT EXISTS tournament (
 );
 
 CREATE TABLE IF NOT EXISTS game_round (
-    pk_round_nr INT PRIMARY KEY
+    pk_round_id INT PRIMARY KEY AUTO_INCREMENT,
+    round_nr INT NOT NULL,
+    fk_pk_tournament_year INT NOT NULL,
+
+    CONSTRAINT fk_pk_tournament_year FOREIGN KEY(fk_pk_tournament_year) REFERENCES tournament(pk_tournament_year) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS symbol (
@@ -25,31 +29,32 @@ CREATE TABLE IF NOT EXISTS participant (
 );
 
 CREATE TABLE IF NOT EXISTS game_round_selects_symbol (
-    fk_pk_round_nr INT,
+    fk_pk_round_id INT,
     fk_pk_symbol VARCHAR(20),
 
-    CONSTRAINT fk_pk_round_nr_symbol FOREIGN KEY (fk_pk_round_nr) REFERENCES game_round (pk_round_nr) ON DELETE SET NULL,
+    CONSTRAINT fk_pk_round_id_symbol FOREIGN KEY (fk_pk_round_id) REFERENCES game_round (pk_round_id) ON DELETE SET NULL,
     CONSTRAINT fk_pk_symbol FOREIGN KEY (fk_pk_symbol) REFERENCES symbol (pk_symbol) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS participant_takes_part_game_round (
-    fk_pk_round_nr INT,
+    fk_pk_round_id INT,
     fk_pk_participant_id INT,
 
-    CONSTRAINT fk_pk_round_nr_participant FOREIGN KEY (fk_pk_round_nr) REFERENCES game_round (pk_round_nr) ON DELETE SET NULL,
+    CONSTRAINT fk_pk_round_nr_participant FOREIGN KEY (fk_pk_round_id) REFERENCES game_round (pk_round_id) ON DELETE SET NULL,
     CONSTRAINT fk_pk_participant_id FOREIGN KEY (fk_pk_participant_id) REFERENCES participant (pk_participant_id) ON DELETE SET NULL
 );
 
 
 INSERT INTO tournament (pk_tournament_year, date)
-VALUES (2020, '2008-03-09');
+VALUES (2020, '2008-03-09'),
+       (2021, '2010-01-06');
 
-INSERT INTO game_round (pk_round_nr)
-VALUES (1),
-       (2),
-       (3),
-       (4),
-       (5);
+INSERT INTO game_round (pk_round_id, round_nr, fk_pk_tournament_year)
+VALUES (1, 1, 2020),
+       (2, 2, 2020),
+       (3, 3, 2020),
+       (4, 4, 2020),
+       (5, 5, 2020);
 
 INSERT INTO participant (pk_participant_id, first_name, last_name)
 VALUES (1, 'Toni', 'Divkovic'),
@@ -62,7 +67,7 @@ VALUES ('Stein'),
        ('Papier'),
        ('Schere');
 
-INSERT INTO game_round_selects_symbol (fk_pk_round_nr, fk_pk_symbol)
+INSERT INTO game_round_selects_symbol (fk_pk_round_id, fk_pk_symbol)
 VALUES (1, 'Stein'),
        (1, 'Schere'),
 
@@ -78,7 +83,7 @@ VALUES (1, 'Stein'),
        (5, 'Stein'),
        (5, 'Papier');
 
-INSERT INTO participant_takes_part_game_round (fk_pk_round_nr, fk_pk_participant_id)
+INSERT INTO participant_takes_part_game_round (fk_pk_round_id, fk_pk_participant_id)
 VALUES (1, 2),
        (1, 1),
 

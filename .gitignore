@@ -5,3 +5,7 @@
 .idea
 /images/desktop.ini
 /database/desktop.ini
+
+/vendor/
+/composer.lock
+/composer.json
