@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS symbol (
 );
 
 CREATE TABLE IF NOT EXISTS participant (
-    pk_participant_id INT PRIMARY KEY,
+    pk_participant_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL
 );

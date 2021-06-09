@@ -97,6 +97,19 @@ if (isset($_GET['tournament'], $_GET['round'], $_GET['participant1'], $_GET['sym
         ->setParameter(1, $_GET['symbol2']);
     $queryBuilder->executeQuery();
 }
+
+if (isset($_GET['participantFirst_name'], $_GET['participantLast_name']) && $_GET['participantFirst_name'] != "" && $_GET['participantLast_name'] != "") {
+    $queryBuilder = getConn()->createQueryBuilder();
+
+    $queryBuilder
+        ->insert('participant')
+        ->values(array('first_name' => '?',
+                'last_name' =>'?')
+        )
+        ->setParameter(0, $_GET['participantFirst_name'])
+        ->setParameter(1, $_GET['participantLast_name']);
+    $queryBuilder->executeQuery();
+}
 ?>
 
 <h1>Admin-Page</h1>
@@ -110,9 +123,9 @@ if (isset($_GET['tournament'], $_GET['round'], $_GET['participant1'], $_GET['sym
         <button type="submit" class="btn btn-primary">Create Game Round</button>
     </form>
 
-    <!--<form method="get" action="createParticipant.php">-->
-    <!--    <button type="submit" class="btn btn-primary">Create Participant</button>-->
-    <!--</form>-->
+    <form method="get" action="createParticipant.php">
+        <button type="submit" class="btn btn-primary">Create Participant</button>
+    </form>
 </div>
 
 <div id="back">
