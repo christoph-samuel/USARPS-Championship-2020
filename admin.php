@@ -32,6 +32,19 @@ if (isset($_GET['tournament'], $_GET['round'], $_GET['participant1'], $_GET['sym
 if (isset($_GET['participantFirst_name'], $_GET['participantLast_name']) && $_GET['participantFirst_name'] != "" && $_GET['participantLast_name'] != "") {
     insertParticipant($_GET['participantFirst_name'], $_GET['participantLast_name']);
 }
+
+
+if (isset($_POST['deleteTournament']) && $_POST['deleteTournament'] != "") {
+    deleteTournament($_POST['deleteTournament']);
+}
+
+if (isset($_POST['deleteGameRound']) && $_POST['deleteGameRound'] != "") {
+    deleteGameRound($_POST['deleteGameRound']);
+}
+
+if (isset($_POST['deleteParticipant']) && $_POST['deleteParticipant'] != "") {
+    deleteParticipant($_POST['deleteParticipant']);
+}
 ?>
 <section>
 
@@ -48,6 +61,12 @@ if (isset($_GET['participantFirst_name'], $_GET['participantLast_name']) && $_GE
 
         <form method="get" action="create/createParticipant.php">
             <button type="submit" class="btn btn-primary">Create Participant</button>
+        </form>
+    </div>
+
+    <div id="delete">
+        <form method="get" action="delete/delete.php">
+            <button type="submit" class="btn btn-danger">Delete Something</button>
         </form>
     </div>
 

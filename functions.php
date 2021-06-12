@@ -145,3 +145,40 @@ function insertParticipant($firstName, $lastName)
         ->setParameter(1, $lastName);
     $queryBuilder->executeQuery();
 }
+
+
+// Delete tournament
+function deleteTournament($year)
+{
+    $queryBuilder = getConn()->createQueryBuilder();
+
+    $queryBuilder
+        ->delete('tournament')
+        ->where('pk_tournament_year = ?')
+        ->setParameter(0, $year);
+    $queryBuilder->executeQuery();
+}
+
+// Delete Game Round
+function deleteGameRound($roundID)
+{
+    $queryBuilder = getConn()->createQueryBuilder();
+
+    $queryBuilder
+        ->delete('game_round')
+        ->where('pk_round_id = ?')
+        ->setParameter(0, $roundID);
+    $queryBuilder->executeQuery();
+}
+
+// Delete Participant
+function deleteParticipant($participantID)
+{
+    $queryBuilder = getConn()->createQueryBuilder();
+
+    $queryBuilder
+        ->delete('participant')
+        ->where('pk_participant_id = ?')
+        ->setParameter(0, $participantID);
+    $queryBuilder->executeQuery();
+}
