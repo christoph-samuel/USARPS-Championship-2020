@@ -38,15 +38,15 @@ if (isset($_GET['participantFirst_name'], $_GET['participantLast_name']) && $_GE
     <h1>Admin-Page</h1>
 
     <div id="create">
-        <form method="get" action="createChampionship.php">
+        <form method="get" action="create/createChampionship.php">
             <button type="submit" class="btn btn-primary">Create Championship</button>
         </form>
 
-        <form method="get" action="createGameRound.php">
+        <form method="get" action="create/createGameRound.php">
             <button type="submit" class="btn btn-primary">Create Game Round</button>
         </form>
 
-        <form method="get" action="createParticipant.php">
+        <form method="get" action="create/createParticipant.php">
             <button type="submit" class="btn btn-primary">Create Participant</button>
         </form>
     </div>

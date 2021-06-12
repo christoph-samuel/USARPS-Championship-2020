@@ -8,16 +8,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../main.css">
     <link rel="stylesheet" href="create.css">
 </head>
 <body>
 
-<form action="admin.php" method="get" id="form">
+<form action="../admin.php" method="get" id="form">
     <div id="input">
         <div id="info">
             <?php
-            include_once("functions.php");
+            include_once("../functions.php");
 
             $tournamentSQL = select("SELECT * FROM tournament");
             $participantSQL = select("SELECT * FROM participant");
@@ -75,7 +75,7 @@
     </div>
     <div id="buttons">
         <button type="submit" class="btn btn-dark">Create Game Round</button>
-        <a href="admin.php">
+        <a href="../admin.php">
             <button type="button" class="btn btn-dark">Zurück</button>
         </a>
     </div>
