@@ -8,61 +8,77 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
             crossorigin="anonymous"></script>
-    <!--    <link rel="stylesheet" href="main.css">-->
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="create.css">
 </head>
 <body>
 
-<form action="admin.php" method="get">
-    <?php
-    include_once("functions.php");
+<form action="admin.php" method="get" id="form">
+    <div id="input">
+        <div id="info">
+            <?php
+            include_once("functions.php");
 
-    $sql = select("SELECT * FROM tournament");
+            $tournamentSQL = select("SELECT * FROM tournament");
+            $participantSQL = select("SELECT * FROM participant");
+            $symbolSQL = select("SELECT * FROM symbol");
 
-    echo "<select name='tournament'>";
-    foreach ($sql as $tournament) {
-        echo "<option value='{$tournament['pk_tournament_year']}'>{$tournament['pk_tournament_year']}</option>";
-    }
-    echo "</select>";
-    ?>
-    <label for="round">Game Round:</label>
-    <input type="number" id="round" name="round">
-    <select name="participant1">
-        <?php
-        $sql = select("SELECT * FROM participant");
-
-        foreach ($sql as $participant) {
-            echo "<option value='{$participant['pk_participant_id']}'>{$participant['first_name']} {$participant['last_name']}</option>";
-        }
-        ?>
-    </select>
-    <select name="symbol1">
-        <?php
-        $sql = select("SELECT * FROM symbol");
-
-        foreach ($sql as $symbol) {
-            echo "<option value='{$symbol['pk_symbol']}'>{$symbol['pk_symbol']}</option>";
-        }
-        ?>
-    </select>
-    <select name="symbol2">
-        <?php
-        $sql = select("SELECT * FROM symbol");
-
-        foreach ($sql as $symbol) {
-            echo "<option value='{$symbol['pk_symbol']}'>{$symbol['pk_symbol']}</option>";
-        }
-        ?>
-    </select>
-    <select name="participant2">
-        <?php
-        $sql = select("SELECT * FROM participant");
-
-        foreach ($sql as $participant) {
-            echo "<option value='{$participant['pk_participant_id']}'>{$participant['first_name']} {$participant['last_name']}</option>";
-        }
-        ?>
-    </select>
-    <button type="submit" class="btn btn-dark">Create Game Round</button>
+            echo "<select class='form-select' name='tournament'><option selected disabled>Jahr</option>";
+            foreach ($tournamentSQL as $tournament) {
+                echo "<option value='{$tournament['pk_tournament_year']}'>{$tournament['pk_tournament_year']}</option>";
+            }
+            echo "</select>";
+            ?>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">#</span>
+                </div>
+                <input type="number" name="round" class="form-control" placeholder="Round Nr." aria-describedby="basic-addon1"
+                       min="1">
+            </div>
+        </div>
+        <div id="game">
+            <select class='form-select' name="participant1">
+                <option selected disabled>Spieler 1</option>
+                <?php
+                foreach ($participantSQL as $participant) {
+                    echo "<option value='{$participant['pk_participant_id']}'>{$participant['first_name']} {$participant['last_name']}</option>";
+                }
+                ?>
+            </select>
+            <select class='form-select' name="symbol1">
+                <option selected disabled>Symbol 1</option>
+                <?php
+                foreach ($symbolSQL as $symbol) {
+                    echo "<option value='{$symbol['pk_symbol']}'>{$symbol['pk_symbol']}</option>";
+                }
+                ?>
+            </select>
+            <span id="vs">&ndash;</span>
+            <select class='form-select' name="symbol2">
+                <option selected disabled>Symbol 2</option>
+                <?php
+                foreach ($symbolSQL as $symbol) {
+                    echo "<option value='{$symbol['pk_symbol']}'>{$symbol['pk_symbol']}</option>";
+                }
+                ?>
+            </select>
+            <select class='form-select' name="participant2">
+                <option selected disabled>Spieler 2</option>
+                <?php
+                foreach ($participantSQL as $participant) {
+                    echo "<option value='{$participant['pk_participant_id']}'>{$participant['first_name']} {$participant['last_name']}</option>";
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div id="buttons">
+        <button type="submit" class="btn btn-dark">Create Game Round</button>
+        <a href="admin.php">
+            <button type="button" class="btn btn-dark">Zurück</button>
+        </a>
+    </div>
 </form>
 
 </body>

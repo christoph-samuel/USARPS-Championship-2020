@@ -1,12 +1,14 @@
 <?php
 require_once 'vendor/autoload.php';
 
-function changeDate($date) :String {
+function changeDate($date): string
+{
     $date = explode("-", $date);
     return "$date[2].$date[1].$date[0]";
 }
 
-function getConn() {
+function getConn()
+{
     $connectionParams = array(
         "dbname" => "usarps_db",
         "user" => "root",
@@ -17,18 +19,20 @@ function getConn() {
     return \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
 }
 
-function select($stmt) {
+function select($stmt)
+{
     $sql = getConn()->prepare($stmt);
     $sql = $sql->executeQuery();
 
     try {
         return $sql->fetchAllAssociative();
-    }catch (Exception $ex) {
+    } catch (Exception $ex) {
         return $ex;
     }
 }
 
-function getSymbol($symbol) {
+function getSymbol($symbol)
+{
     switch ($symbol) {
         case "Schere":
             return "images/scissors.png";
@@ -40,4 +44,104 @@ function getSymbol($symbol) {
             echo "Symbol unknown!";
             return "";
     }
+}
+
+// Insert tournament
+function insertTournament($year, $date)
+{
+    $queryBuilder = getConn()->createQueryBuilder();
+
+    $queryBuilder
+        ->insert('tournament')
+        ->values(array(
+                'pk_tournament_year' => '?',
+                'date' => '?')
+        )
+        ->setParameter(0, $year)
+        ->setParameter(1, $date);
+    $queryBuilder->executeQuery();
+}
+
+// Insert Game Round
+function insertGameRound($roundNr, $tournament, $participant1, $participant2, $symbol1, $symbol2)
+{
+    // Insert new Round Nr in "game_round"
+    $queryBuilder = getConn()->createQueryBuilder();
+    $queryBuilder
+        ->insert('game_round')
+        ->values(array(
+            'round_nr' => '?',
+            'fk_pk_tournament_year' => '?'
+        ))
+        ->setParameter(0, $roundNr)
+        ->setParameter(1, $tournament);
+    $queryBuilder->executeQuery();
+
+    // Get New Round ID (Auto Increment in database)
+    $sql = select("SELECT * FROM game_round");
+    $id = $sql[sizeof($sql) - 1]['pk_round_id'];
+
+    // Insert first Participant of Game Round
+    $queryBuilder = getConn()->createQueryBuilder();
+    $queryBuilder
+        ->insert('participant_takes_part_game_round')
+        ->values(array(
+            'fk_pk_round_id' => '?',
+            'fk_pk_participant_id' => '?'
+        ))
+        ->setParameter(0, $id)
+        ->setParameter(1, $participant1);
+    $queryBuilder->executeQuery();
+
+    // Insert second Participant of Game Round
+    $queryBuilder = getConn()->createQueryBuilder();
+    $queryBuilder
+        ->insert('participant_takes_part_game_round')
+        ->values(array(
+            'fk_pk_round_id' => '?',
+            'fk_pk_participant_id' => '?'
+        ))
+        ->setParameter(0, $id)
+        ->setParameter(1, $participant2);
+    $queryBuilder->executeQuery();
+
+    // Insert first Symbol of Game Round
+    $queryBuilder = getConn()->createQueryBuilder();
+    $queryBuilder
+        ->insert('game_round_selects_symbol')
+        ->values(array(
+            'fk_pk_round_id' => '?',
+            'fk_pk_symbol' => '?'
+        ))
+        ->setParameter(0, $id)
+        ->setParameter(1, $symbol1);
+    $queryBuilder->executeQuery();
+
+    // Insert second Symbol of Game Round
+    $queryBuilder = getConn()->createQueryBuilder();
+    $queryBuilder
+        ->insert('game_round_selects_symbol')
+        ->values(array(
+            'fk_pk_round_id' => '?',
+            'fk_pk_symbol' => '?'
+        ))
+        ->setParameter(0, $id)
+        ->setParameter(1, $symbol2);
+    $queryBuilder->executeQuery();
+}
+
+// Insert Participant
+function insertParticipant($firstName, $lastName)
+{
+    $queryBuilder = getConn()->createQueryBuilder();
+
+    $queryBuilder
+        ->insert('participant')
+        ->values(array(
+                'first_name' => '?',
+                'last_name' => '?')
+        )
+        ->setParameter(0, $firstName)
+        ->setParameter(1, $lastName);
+    $queryBuilder->executeQuery();
 }

@@ -46,15 +46,18 @@ CREATE TABLE IF NOT EXISTS participant_takes_part_game_round (
 
 
 INSERT INTO tournament (pk_tournament_year, date)
-VALUES (2020, '2008-03-09'),
-       (2021, '2010-01-06');
+VALUES (2008, '2008-03-09'),
+       (2020, '2020-01-06');
 
 INSERT INTO game_round (pk_round_id, round_nr, fk_pk_tournament_year)
-VALUES (1, 1, 2020),
-       (2, 2, 2020),
-       (3, 3, 2020),
-       (4, 4, 2020),
-       (5, 5, 2020);
+VALUES (1, 1, 2008),
+       (2, 2, 2008),
+       (3, 3, 2008),
+       (4, 4, 2008),
+       (5, 5, 2008),
+
+       (6, 1, 2020),
+       (7, 2, 2020);
 
 INSERT INTO participant (pk_participant_id, first_name, last_name)
 VALUES (1, 'Toni', 'Divkovic'),
@@ -81,7 +84,13 @@ VALUES (1, 'Stein'),
        (4, 'Schere'),
 
        (5, 'Stein'),
-       (5, 'Papier');
+       (5, 'Papier'),
+
+       (6, 'Papier'),
+       (6, 'Papier'),
+
+       (7, 'Stein'),
+       (7, 'Schere');
 
 INSERT INTO participant_takes_part_game_round (fk_pk_round_id, fk_pk_participant_id)
 VALUES (1, 2),
@@ -97,4 +106,10 @@ VALUES (1, 2),
        (4, 1),
 
        (5, 2),
-       (5, 3);
+       (5, 3),
+
+       (6, 1),
+       (6, 3),
+
+       (7, 2),
+       (7, 4);

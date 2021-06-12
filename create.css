@@ -1,0 +1,94 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("images/rock-paper-scissors.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+#form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: rgba(255,255,255,0.6);
+    border-radius: 20px;
+    padding: 30px;
+}
+
+#input {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+#info {
+    margin-bottom: 20px;
+}
+#participant {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+#participant > div:nth-child(1) {
+    margin-bottom: 10px;
+}
+
+#buttons {
+    margin-top: 40px;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    grid-column-gap: 20px;
+}
+#buttons > a > button {
+    width: 100%;
+}
+
+.form-select {
+    display: inline-block;
+    width: max-content;
+    margin: 0;
+}
+.input-group {
+    display: inline-flex;
+    width: max-content;
+}
+#vs {
+    font-weight: 800;
+    font-size: 25px;
+}
+
+
+@media (max-width: 750px) {
+    #game {
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: row;
+        grid-row-gap: 10px;
+        text-align: center;
+    }
+    #game > select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    #info {
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: row;
+        grid-row-gap: 10px;
+        justify-content: center;
+    }
+    #info > * {
+        justify-self: center;
+    }
+
+    #buttons {
+        grid-auto-columns: max-content;
+        grid-auto-flow: row;
+        grid-row-gap: 10px;
+    }
+}

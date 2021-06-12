@@ -1,0 +1,23 @@
+body > div {
+    margin-bottom: 50px;
+}
+
+img {
+    width: 40px;
+    height: auto;
+}
+
+.second {
+    transform: rotate(-180deg) scaleY(-1);
+}
+table {
+    text-align: center;
+}
+td, th {
+    vertical-align: middle;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
