@@ -5,8 +5,28 @@ namespace Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * A Game Round with a Nr. and 2 Players playing against each other
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="gameRounds")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\HasLifecycleCallbacks
+ */
 class GameRound
 {
+    /**
+     * The unique auto incremented primary key.
+     *
+     * @var int|null
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
+     */
+    protected $roundID;
+
     /**
      * Round Nr.
      *
