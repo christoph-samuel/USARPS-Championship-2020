@@ -75,8 +75,8 @@ class GameRound
         $this->roundNr = $roundNr;
         $this->player1 = $player1;
         $this->player2 = $player2;
-        $this->symbol1 = fopen($symbol1['tmp_name'], 'rb');
-        $this->symbol2 = fopen($symbol2['tmp_name'], 'rb');
+        $this->symbol1 = $symbol1;
+        $this->symbol2 = $symbol2;
     }
 
 }
