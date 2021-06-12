@@ -12,3 +12,9 @@
 /delete/desktop.ini
 /create/desktop.ini
 /src/desktop.ini
+/src/Entity/desktop.ini
+/src/Secrets/desktop.ini
+/public/desktop.ini
+/public/delete/desktop.ini
+/public/create/desktop.ini
+/config/desktop.ini

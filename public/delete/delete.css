@@ -35,7 +35,7 @@ td, th {
 .deleteBasket {
     width: 60px;
     height: 60px;
-    background-image: url("../images/delete.svg");
+    background-image: url("../../images/delete.svg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;

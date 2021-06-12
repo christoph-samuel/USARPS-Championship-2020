@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 function changeDate($date): string
 {
@@ -59,7 +59,7 @@ function insertTournament($year, $date)
         )
         ->setParameter(0, $year)
         ->setParameter(1, $date);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 }
 
 // Insert Game Round
@@ -75,7 +75,7 @@ function insertGameRound($roundNr, $tournament, $participant1, $participant2, $s
         ))
         ->setParameter(0, $roundNr)
         ->setParameter(1, $tournament);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 
     // Get New Round ID (Auto Increment in database)
     $sql = select("SELECT * FROM game_round");
@@ -91,7 +91,7 @@ function insertGameRound($roundNr, $tournament, $participant1, $participant2, $s
         ))
         ->setParameter(0, $id)
         ->setParameter(1, $participant1);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 
     // Insert second Participant of Game Round
     $queryBuilder = getConn()->createQueryBuilder();
@@ -103,7 +103,7 @@ function insertGameRound($roundNr, $tournament, $participant1, $participant2, $s
         ))
         ->setParameter(0, $id)
         ->setParameter(1, $participant2);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 
     // Insert first Symbol of Game Round
     $queryBuilder = getConn()->createQueryBuilder();
@@ -115,7 +115,7 @@ function insertGameRound($roundNr, $tournament, $participant1, $participant2, $s
         ))
         ->setParameter(0, $id)
         ->setParameter(1, $symbol1);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 
     // Insert second Symbol of Game Round
     $queryBuilder = getConn()->createQueryBuilder();
@@ -127,7 +127,7 @@ function insertGameRound($roundNr, $tournament, $participant1, $participant2, $s
         ))
         ->setParameter(0, $id)
         ->setParameter(1, $symbol2);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 }
 
 // Insert Participant
@@ -143,7 +143,7 @@ function insertParticipant($firstName, $lastName)
         )
         ->setParameter(0, $firstName)
         ->setParameter(1, $lastName);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 }
 
 
@@ -156,7 +156,7 @@ function deleteTournament($year)
         ->delete('tournament')
         ->where('pk_tournament_year = ?')
         ->setParameter(0, $year);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 }
 
 // Delete Game Round
@@ -168,7 +168,7 @@ function deleteGameRound($roundID)
         ->delete('game_round')
         ->where('pk_round_id = ?')
         ->setParameter(0, $roundID);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 }
 
 // Delete Participant
@@ -180,5 +180,5 @@ function deleteParticipant($participantID)
         ->delete('participant')
         ->where('pk_participant_id = ?')
         ->setParameter(0, $participantID);
-    $queryBuilder->executeQuery();
+    $queryBuilder->execute();
 }

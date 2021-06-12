@@ -8,13 +8,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../main.css">
-    <link rel="stylesheet" href="delete.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
 <?php
-include_once("../functions.php");
+require_once '../vendor/autoload.php';
+include_once("functions.php");
 
 $sql = select("SELECT * FROM tournament");
 $i = 0;
@@ -26,10 +27,15 @@ foreach ($sql as $tournament) {
 <div>
     <div class="header">
         <h1>Championship {$tournament['pk_tournament_year']}</h1>
-        <form action="../admin.php" method="post">
-            <button type="submit" class="deleteBasket" name="deleteTournament" value="{$tournament["pk_tournament_year"]}"/>
+ENDE;
+    if ($i === 0) {
+        echo <<<ENDE
+        <form method="get" action="admin.php">
+            <button type="submit" class="btn btn-dark">Admin-Bereich</button>
         </form>
 ENDE;
+        $i++;
+    }
     echo <<<ENDE
     </div>
     <h5>{$changeDate($tournament['date'])}</h5>
@@ -43,7 +49,6 @@ ENDE;
                 <th scope="col">vs.</th>
                 <th scope="col">Symbol</th>
                 <th scope="col">Second Player</th>
-                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -69,53 +74,10 @@ ENDE;
             echo "<td>&ndash;</td>";
             echo "<td><img src='../" . getSymbol($sql4[1]['fk_pk_symbol']) . "' class='second'></td>";
             echo "<td>{$sql3[1]['first_name']} {$sql3[1]['last_name']}</td>";
-            echo <<<ENDE
-                    <td>
-                        <form action="../admin.php" method="post">
-                            <button type="submit" class="deleteBasket deleteBasketSmall" name="deleteGameRound" value="{$game_round['pk_round_id']}"/>
-                        </form>
-                    </td>
-ENDE;
         }
     }
     echo "</tbody></table></div>";
 }
-
-
-$sql5 = select("SELECT * FROM participant");
-
-echo <<<ENDE
-<hr>
-<div id="participantDiv">
-    <div class="header">
-        <h1>Participants</h1>
-    </div>
-    <table class="table table-hover table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody id="participants">
-ENDE;
-
-foreach ($sql5 as $participant) {
-    echo <<<ENDE
-            <tr>
-                <td>{$participant["first_name"]}</td>
-                <td>{$participant["last_name"]}</td>
-                <td>
-                    <form action="../admin.php" method="post">
-                        <button type="submit" class="deleteBasket deleteBasketSmall" name="deleteParticipant" value="{$participant['pk_participant_id']}"/>
-                    </form>
-                </td>
-            </tr>
-ENDE;
-}
-
-echo "</tbody></table></div>";
 ?>
 </body>
 </html>
