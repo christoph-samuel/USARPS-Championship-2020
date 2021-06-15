@@ -14,7 +14,26 @@
 <body>
 
 <?php
+use Entity\GameRound;
+
 include_once("functions.php");
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
+
+if (isset($_POST['ormDate'], $_POST['ormRoundNr'], $_POST['ormPlayer1'], $_POST['ormPlayer2'],
+    $_FILES['ormSymbol1']['tmp_name'], $_FILES['ormSymbol2']['tmp_name'])) {
+    var_dump($_FILES['ormSymbol1']['tmp_name']);
+    var_dump($_POST['ormDate']);
+
+// Persist the uploaded file
+    $entity = new GameRound($_POST['ormDate'], $_POST['ormRoundNr'], $_POST['ormPlayer1'], $_POST['ormPlayer2'],
+        file_get_contents($_FILES['ormSymbol1']['tmp_name']), file_get_contents($_FILES['ormSymbol2']['tmp_name']));
+    $entityManager->persist($entity);
+    $entityManager->flush();
+
+// Prevent re-POST if browser is refreshed
+    header('Location: ' . $_SERVER['PHP_SELF']);
+}
 
 if (isset($_GET['date']) && $_GET['date'] != "") {
     $year = explode("-", $_GET['date'])[0];
@@ -67,6 +86,9 @@ if (isset($_POST['deleteParticipant']) && $_POST['deleteParticipant'] != "") {
     <div id="delete">
         <form method="get" action="delete/delete.php">
             <button type="submit" class="btn btn-danger">Delete Something</button>
+        </form>
+        <form method="get" action="test.php">
+            <button type="submit" class="btn btn-info">Test</button>
         </form>
     </div>
 
