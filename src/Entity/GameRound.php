@@ -30,6 +30,13 @@ class GameRound
     /**
      * Round Nr.
      *
+     * @ORM\Column(type="string")
+     */
+    protected string $date;
+
+    /**
+     * Round Nr.
+     *
      * @ORM\Column(type="integer")
      */
     protected int $roundNr;
@@ -64,14 +71,17 @@ class GameRound
 
     /**
      * GameRound constructor.
+     *
+     * @param $date
      * @param $roundNr
      * @param $player1
      * @param $player2
      * @param $symbol1
      * @param $symbol2
      */
-    public function __construct($roundNr, $player1, $player2, $symbol1, $symbol2)
+    public function __construct($date, $roundNr, $player1, $player2, $symbol1, $symbol2)
     {
+        $this->date = $date;
         $this->roundNr = $roundNr;
         $this->player1 = $player1;
         $this->player2 = $player2;
