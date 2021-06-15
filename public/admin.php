@@ -14,6 +14,7 @@
 <body>
 
 <?php
+
 use Entity\GameRound;
 
 include_once("functions.php");
@@ -22,47 +23,33 @@ require_once __DIR__ . '/../bootstrap.php';
 
 if (isset($_POST['ormDate'], $_POST['ormRoundNr'], $_POST['ormPlayer1'], $_POST['ormPlayer2'],
     $_FILES['ormSymbol1']['tmp_name'], $_FILES['ormSymbol2']['tmp_name'])) {
-    var_dump($_FILES['ormSymbol1']['tmp_name']);
-    var_dump($_POST['ormDate']);
 
 // Persist the uploaded file
     $entity = new GameRound($_POST['ormDate'], $_POST['ormRoundNr'], $_POST['ormPlayer1'], $_POST['ormPlayer2'],
         file_get_contents($_FILES['ormSymbol1']['tmp_name']), file_get_contents($_FILES['ormSymbol2']['tmp_name']));
     $entityManager->persist($entity);
     $entityManager->flush();
+}
 
-// Prevent re-POST if browser is refreshed
+if (isset($_POST['deleteTournament'])) {
+// Remove the chosen tournament
+    $entity = $entityManager->getRepository(GameRound::class)->findBy(array('date' => $_POST['deleteTournament']));
+    foreach ($entity as $item) {
+        $entityManager->remove($item);
+        $entityManager->flush();
+    }
+}
+
+if (isset($_POST['deleteGameRound'])) {
+// Remove the chosen Game Round
+    $entity = $entityManager->find(GameRound::class, $_POST['deleteGameRound']);
+    $entityManager->remove($entity);
+    $entityManager->flush();
+}
+
+if (isset($_POST['ormDate']) || isset($_POST['deleteTournament']) || isset($_POST['deleteGameRound'])) {
+    // Prevent re-POST if browser is refreshed
     header('Location: ' . $_SERVER['PHP_SELF']);
-}
-
-if (isset($_GET['date']) && $_GET['date'] != "") {
-    $year = explode("-", $_GET['date'])[0];
-
-    insertTournament($year, $_GET['date']);
-}
-
-if (isset($_GET['tournament'], $_GET['round'], $_GET['participant1'], $_GET['symbol1'], $_GET['symbol2'], $_GET['participant2']) &&
-    $_GET['tournament'] != "" && $_GET['round'] != "" && $_GET['participant1'] != "" &&
-    $_GET['symbol1'] != "" && $_GET['symbol2'] != "" && $_GET['participant2'] != "") {
-
-    insertGameRound($_GET['round'], $_GET['tournament'], $_GET['participant1'], $_GET['participant2'], $_GET['symbol1'], $_GET['symbol2']);
-}
-
-if (isset($_GET['participantFirst_name'], $_GET['participantLast_name']) && $_GET['participantFirst_name'] != "" && $_GET['participantLast_name'] != "") {
-    insertParticipant($_GET['participantFirst_name'], $_GET['participantLast_name']);
-}
-
-
-if (isset($_POST['deleteTournament']) && $_POST['deleteTournament'] != "") {
-    deleteTournament($_POST['deleteTournament']);
-}
-
-if (isset($_POST['deleteGameRound']) && $_POST['deleteGameRound'] != "") {
-    deleteGameRound($_POST['deleteGameRound']);
-}
-
-if (isset($_POST['deleteParticipant']) && $_POST['deleteParticipant'] != "") {
-    deleteParticipant($_POST['deleteParticipant']);
 }
 ?>
 <section>
@@ -70,16 +57,8 @@ if (isset($_POST['deleteParticipant']) && $_POST['deleteParticipant'] != "") {
     <h1>Admin-Page</h1>
 
     <div id="create">
-        <form method="get" action="create/createChampionship.php">
-            <button type="submit" class="btn btn-primary">Create Championship</button>
-        </form>
-
-        <form method="get" action="create/createGameRound.php">
+        <form method="get" action="create/create.php">
             <button type="submit" class="btn btn-primary">Create Game Round</button>
-        </form>
-
-        <form method="get" action="create/createParticipant.php">
-            <button type="submit" class="btn btn-primary">Create Participant</button>
         </form>
     </div>
 
@@ -87,13 +66,10 @@ if (isset($_POST['deleteParticipant']) && $_POST['deleteParticipant'] != "") {
         <form method="get" action="delete/delete.php">
             <button type="submit" class="btn btn-danger">Delete Something</button>
         </form>
-        <form method="get" action="test.php">
-            <button type="submit" class="btn btn-info">Test</button>
-        </form>
     </div>
 
     <div id="back">
-        <form method="get" action="index.php">
+        <form action="index.php">
             <button type="submit" class="btn btn-dark">Zurück zur Homepage</button>
         </form>
     </div>

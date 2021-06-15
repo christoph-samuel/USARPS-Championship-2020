@@ -28,7 +28,7 @@ class GameRound
     protected $roundID;
 
     /**
-     * Round Nr.
+     * Date of tournament
      *
      * @ORM\Column(type="string")
      */
@@ -87,6 +87,54 @@ class GameRound
         $this->player2 = $player2;
         $this->symbol1 = $symbol1;
         $this->symbol2 = $symbol2;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRoundNr(): int
+    {
+        return $this->roundNr;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlayer1(): string
+    {
+        return $this->player1;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlayer2(): string
+    {
+        return $this->player2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSymbol1()
+    {
+        return $this->symbol1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSymbol2()
+    {
+        return $this->symbol2;
     }
 
 }
